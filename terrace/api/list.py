@@ -3,22 +3,19 @@ __author__ = 'Raghav Sidhanti'
 from flask import Blueprint
 from flask import request, jsonify, url_for
 
-api = Blueprint('api', __name__)
+list_api = Blueprint('list_api', __name__)
 
 
-@api.route('/list', methods=['POST'])
-def add_list():
-    name = request.json.get('name')
-    return jsonify({'name': name})
+@list_api.route('/lists', methods=['GET', 'POST'])
+def all_lists():
+    if request.method == 'GET':
+        return jsonify({'id': 'lists', 'method': 'GET'})
+    elif request.method == 'POST':
+        return jsonify({'id': 'lists', 'method': 'POST'})
 
 
-@api.route('/lists', methods=['GET'])
-def get_lists():
-    return jsonify({'url': url_for('api.get_lists')})
-
-
-@api.route('/list/<int:list_id>', methods=['GET', 'PUT', 'DELETE'])
-def get_list(list_id):
+@list_api.route('/list/<int:list_id>', methods=['GET', 'PUT', 'DELETE'])
+def list_by_id(list_id):
     if request.method == 'GET':
         return jsonify({'id': list_id, 'method': 'GET'})
 

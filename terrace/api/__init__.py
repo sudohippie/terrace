@@ -1,6 +1,8 @@
 __author__ = 'Raghav Sidhanti'
 
-from terrace.api.list import api
+from terrace.api.list import list_api
+from terrace.api.item import item_api
 from terrace import flask_app
 
-flask_app.register_blueprint(api, url_prefix='/api')
+flask_app.register_blueprint(list_api, url_prefix='/api')
+flask_app.register_blueprint(item_api, url_prefix='/api')
