@@ -30,6 +30,7 @@ def all_lists():
 
 @list_api.route('/list/<int:list_id>', methods=['GET', 'PUT', 'DELETE'])
 def list_by_id(list_id):
+    res = None
     if request.method == 'GET':
         one_list = list_dao.get_list_by_id(list_id)
         res = jsonify(get_list_as_dict(one_list))
@@ -37,27 +38,31 @@ def list_by_id(list_id):
         if one_list is None:
             res.status_code = NOT_FOUND
 
-        return res
-
     elif request.method == 'PUT':
         name = request.json.get('name')
         if name is None:
-            resp = jsonify({'error': 'Name is required'})
-            resp.status_code = BAD_REQUEST
-            return resp
+            res = jsonify({'error': 'Name is required'})
+            res.status_code = BAD_REQUEST
         else:
             l = list_dao.update_list(list_id=list_id, name=name)
             res = jsonify(get_list_as_dict(l))
             if l is None:
                 res.status_code = NOT_FOUND
-            return res
 
     elif request.method == 'DELETE':
         l = list_dao.delete_list(list_id)
         res = jsonify(get_list_as_dict(l))
         if l is None:
             res.status_code = NOT_FOUND
-        return res
+
+    return res
+
+
+@list_api.errorhandler(NOT_FOUND)
+def not_found(error):
+    res = jsonify({'error': 'resource not found'})
+    res.status_code = NOT_FOUND
+    return res
 
 
 def get_list_as_dict(l):
