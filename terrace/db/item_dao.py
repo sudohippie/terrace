@@ -11,10 +11,10 @@ def get_all_items():
 def save_item(**kwargs):
     name = kwargs.get('name')
     is_complete = kwargs.get('is_complete')
-    complete_date = kwargs.get('compete_date')
+    complete_date = kwargs.get('complete_date')
     due_date = kwargs.get('due_date')
 
-    i = Item(name, is_complete, complete_date, due_date)
+    i = Item(name=name, is_complete=is_complete, complete_date=complete_date, due_date=due_date)
 
     db.session.add(i)
     db.session.commit()
@@ -41,7 +41,7 @@ def update_item(**kwargs):
         i.name = kwargs.get('name')
 
     if 'is_complete' in kwargs:
-        is_complete = kwargs.get('is_compete')
+        is_complete = kwargs.get('is_complete')
         if is_complete:
             if i.is_complete is None or not i.is_complete:
                 i.is_complete = True
