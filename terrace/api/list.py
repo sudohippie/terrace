@@ -2,7 +2,7 @@ __author__ = 'Raghav Sidhanti'
 
 from terrace.db import list_dao
 from flask import Blueprint
-from flask import request, jsonify, url_for
+from flask import request, jsonify
 from httplib import BAD_REQUEST, NOT_FOUND, OK
 
 list_api = Blueprint('list_api', __name__)
@@ -13,14 +13,15 @@ def all_lists():
     results = None
 
     if request.method == 'GET':
-        all_lists = list_dao.get_all_lists()
-        for l in all_lists:
+        all = list_dao.get_all()
+        for l in all:
             results.append(get_list_as_dict(l))
 
     elif request.method == 'POST':
-        new_lists = request.json.get('lists')
-        for new_list in new_lists:
-            l = list_dao.save_list(name=new_list.get('name'))
+        contents = request.json.get('lists')
+
+        for content in contents:
+            l = list_dao.save(name=content.get('name'))
             results.append(get_list_as_dict(l))
 
     return jsonify({'lists': results})
@@ -32,10 +33,10 @@ def list_by_id(list_id):
     status_code = OK
 
     if request.method == 'GET':
-        one_list = list_dao.get_list_by_id(list_id)
-        result = get_list_as_dict(one_list)
+        one = list_dao.get_by_id(list_id)
+        result = get_list_as_dict(one)
 
-        if one_list is None:
+        if one is None:
             status_code = NOT_FOUND
 
     elif request.method == 'PUT':
@@ -44,14 +45,14 @@ def list_by_id(list_id):
         if name is None:
             status_code = BAD_REQUEST
         else:
-            l = list_dao.update_list(list_id=list_id, name=name)
+            l = list_dao.update(list_id=list_id, name=name)
             result = get_list_as_dict(l)
 
             if l is None:
                 status_code = NOT_FOUND
 
     elif request.method == 'DELETE':
-        l = list_dao.delete_list(list_id)
+        l = list_dao.delete(list_id)
         result = get_list_as_dict(l)
 
         if l is None:

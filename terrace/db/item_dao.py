@@ -4,11 +4,11 @@ from terrace.db.model import db, Item
 from datetime import datetime
 
 
-def get_all_items():
+def get_all():
     return Item.query.all()
 
 
-def save_item(**kwargs):
+def save(**kwargs):
     name = kwargs.get('name')
 
     i = Item(name=name)
@@ -19,16 +19,16 @@ def save_item(**kwargs):
     return i
 
 
-def get_item_by_id(item_id):
+def get_by_id(item_id):
     if item_id is None:
         return None
 
     return Item.query.get(item_id)
 
 
-def update_item(item_id, name):
+def update(item_id, name):
 
-    i = get_item_by_id(item_id)
+    i = get_by_id(item_id)
 
     if i is None:
         return None
@@ -41,8 +41,8 @@ def update_item(item_id, name):
     return i
 
 
-def delete_item(item_id):
-    i = get_item_by_id(item_id)
+def delete(item_id):
+    i = get_by_id(item_id)
 
     if i is None:
         return None

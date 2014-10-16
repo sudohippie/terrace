@@ -3,11 +3,11 @@ __author__ = 'Raghav Sidhanti'
 from terrace.db.model import db, List
 
 
-def get_all_lists():
+def get_all():
     return List.query.all()
 
 
-def save_list(name):
+def save(name):
     l = List(name)
 
     db.session.add(l)
@@ -16,12 +16,12 @@ def save_list(name):
     return l
 
 
-def get_list_by_id(list_id):
+def get_by_id(list_id):
     return List.query.get(list_id)
 
 
-def update_list(list_id, name):
-    l = get_list_by_id(list_id)
+def update(list_id, name):
+    l = get_by_id(list_id)
 
     if l is None:
         return None
@@ -34,8 +34,8 @@ def update_list(list_id, name):
     return l
 
 
-def delete_list(list_id):
-    l = get_list_by_id(list_id)
+def delete(list_id):
+    l = get_by_id(list_id)
 
     if l is None:
         return None
