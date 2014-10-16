@@ -23,6 +23,9 @@ def get_list_by_id(list_id):
 def update_list(list_id, name):
     l = get_list_by_id(list_id)
 
+    if l is None:
+        return None
+
     l.name = name
 
     db.session.add(l)
