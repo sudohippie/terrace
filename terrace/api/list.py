@@ -15,14 +15,14 @@ def all_lists():
     if request.method == 'GET':
         all = list_dao.get_all()
         for l in all:
-            results.append(get_list_as_dict(l))
+            results.append(l.to_dict())
 
     elif request.method == 'POST':
         contents = request.json.get('lists')
 
         for content in contents:
             l = list_dao.save(name=content.get('name'))
-            results.append(get_list_as_dict(l))
+            results.append(l.to_dict())
 
     return jsonify({'lists': results})
 
@@ -34,7 +34,7 @@ def list_by_id(list_id):
 
     if request.method == 'GET':
         one = list_dao.get_by_id(list_id)
-        result = get_list_as_dict(one)
+        result = one.to_dict()
 
         if one is None:
             status_code = NOT_FOUND
@@ -46,14 +46,14 @@ def list_by_id(list_id):
             status_code = BAD_REQUEST
         else:
             l = list_dao.update(list_id=list_id, name=name)
-            result = get_list_as_dict(l)
+            result = l.to_dict()
 
             if l is None:
                 status_code = NOT_FOUND
 
     elif request.method == 'DELETE':
         l = list_dao.delete(list_id)
-        result = get_list_as_dict(l)
+        result = l.to_dict()
 
         if l is None:
             status_code = NOT_FOUND
@@ -62,9 +62,3 @@ def list_by_id(list_id):
     response.status_code = status_code
 
     return response
-
-def get_list_as_dict(l):
-    if l is None:
-        return {}
-    val = {'id': l.id, 'name': l.name, 'update_date': l.update_date, 'create_date': l.create_date}
-    return val

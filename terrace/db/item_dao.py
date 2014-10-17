@@ -1,7 +1,6 @@
 __author__ = 'Raghav Sidhanti'
 
 from terrace.db.model import db, Item
-from datetime import datetime
 
 
 def get_all():
